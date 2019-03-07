@@ -234,6 +234,7 @@ namespace LongListLibrary
         public  void ViewListMenu()
         {
             MenuDisplaySettings();
+            
             Files files = new Files();
 
             List<Tuple<string, bool>> MyList = files.LoadItem();
@@ -253,17 +254,23 @@ namespace LongListLibrary
                 if (item.Item2 == true)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"{i++}){item.Item1}");
+                    Console.WriteLine($"\n{i++}){item.Item1}");
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine($"{i++}) {item.Item1}");
+                    Console.WriteLine($"\n{i++}) {item.Item1}");
                 }
             }
 
             /// Select item
-            
+            Console.WriteLine($"\nCurrent Page #{i}");
+            Console.WriteLine("---------------------");
+            Console.Write("Enter Your Selection: ");
+            var userInput = Console.ReadLine();
+            int x = Convert.ToInt32(userInput);
+            Console.Clear();
+            Console.WriteLine($"{MyList[x-1].Item1}");
             ///     a.Mark as Complete
             ///     b.Mark as Incomplete 
             ///         
