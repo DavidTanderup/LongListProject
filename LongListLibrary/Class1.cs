@@ -266,10 +266,13 @@ namespace LongListLibrary
             /// Select item
             Console.WriteLine($"\nCurrent Page #{i}");
             Console.WriteLine("---------------------");
+            // condition next && previous pages
             Console.Write("Enter Your Selection: ");
+
             var userInput = Console.ReadLine();
             int x = Convert.ToInt32(userInput);
             Console.Clear();
+
             Console.WriteLine($"{MyList[x-1].Item1}");
             ///     a.Mark as Complete
             ///     b.Mark as Incomplete 
