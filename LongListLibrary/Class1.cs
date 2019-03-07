@@ -262,47 +262,34 @@ namespace LongListLibrary
             }
             MyList.Count();
 
-            while (true)
-            {
 
                 foreach (Tuple<string, bool> item in MyList.GetRange(r,index))
                 {
                     if (item.Item2 == true)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.WriteLine($"\n{i++}){item.Item1}");
+                        Console.WriteLine($"{i++}){item.Item1}");
                     }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine($"\n{i++}) {item.Item1}");
+                        Console.WriteLine($"{i++}) {item.Item1}");
                     }
                 }
 
 
                 /// Select item
-                Console.WriteLine($"\nCurrent Page #{i}");
+                Console.WriteLine($"\nCurrent Page #{r+1}");
                 Console.WriteLine("---------------------");
                 // condition next && previous pages
-                if (MyList.Count()>25 && r == 1)
+                if (MyList.Count()>25 && r == 0)
                 {
-                    Console.WriteLine($"Next Page Press 'n'");
+                    Console.WriteLine($"'n') Next Page");
+                    Console.WriteLine($"");
                 }
+
                 Console.Write("Enter Your Selection: ");
-                var userInput = Console.ReadLine();
 
-                if (userInput == "p")
-                {
-                    r =- 1;
-                }
-                else if (userInput == "n")
-                {
-                    r =+ 1;
-                }
-                int x = Convert.ToInt32(userInput);
-                Console.Clear();
-
-                Console.WriteLine($"{MyList[x-1].Item1}");
 
 
                 ///     a.Mark as Complete
@@ -315,7 +302,7 @@ namespace LongListLibrary
 
 
                 Console.ReadLine();
-            }
+            
 
 
 
