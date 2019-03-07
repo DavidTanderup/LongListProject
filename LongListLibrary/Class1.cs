@@ -250,44 +250,78 @@ namespace LongListLibrary
 
             /// While Loop insert here
             int i = 1;
-            int index = MyList.Count();
-
-            foreach (Tuple<string, bool> item in MyList.GetRange(0,index))
+            int r = 0; // page numbers
+            int index;
+            if ((MyList.Count()-r*25) > 25)
             {
-                if (item.Item2 == true)
+                index = 25;
+            }
+            else
+            {
+                index = MyList.Count();       
+            }
+            MyList.Count();
+
+            while (true)
+            {
+
+                foreach (Tuple<string, bool> item in MyList.GetRange(r,index))
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"\n{i++}){item.Item1}");
+                    if (item.Item2 == true)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.WriteLine($"\n{i++}){item.Item1}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine($"\n{i++}) {item.Item1}");
+                    }
                 }
-                else
+
+
+                /// Select item
+                Console.WriteLine($"\nCurrent Page #{i}");
+                Console.WriteLine("---------------------");
+                // condition next && previous pages
+                if (MyList.Count()>25 && r == 1)
                 {
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine($"\n{i++}) {item.Item1}");
+                    Console.WriteLine($"Next Page Press 'n'");
                 }
+                Console.Write("Enter Your Selection: ");
+                var userInput = Console.ReadLine();
+
+                if (userInput == "p")
+                {
+                    r =- 1;
+                }
+                else if (userInput == "n")
+                {
+                    r =+ 1;
+                }
+                int x = Convert.ToInt32(userInput);
+                Console.Clear();
+
+                Console.WriteLine($"{MyList[x-1].Item1}");
+
+
+                ///     a.Mark as Complete
+                ///     b.Mark as Incomplete 
+                ///         
+                /// Next page (if more than 25)
+                /// Previous page
+
+
+
+
+                Console.ReadLine();
             }
 
-            /// Select item
-            Console.WriteLine($"\nCurrent Page #{i}");
-            Console.WriteLine("---------------------");
-            // condition next && previous pages
-
-            Console.Write("Enter Your Selection: ");
-
-            var userInput = Console.ReadLine();
-            int x = Convert.ToInt32(userInput);
-            Console.Clear();
-
-            Console.WriteLine($"{MyList[x-1].Item1}");
-            ///     a.Mark as Complete
-            ///     b.Mark as Incomplete 
-            ///         
-            /// Next page (if more than 25)
-            /// Previous page
 
 
 
 
-            Console.ReadLine();
+
 
         }
 
