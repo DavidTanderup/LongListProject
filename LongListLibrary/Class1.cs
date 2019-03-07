@@ -225,7 +225,16 @@ namespace LongListLibrary
 
 
 
+        public void ViewList()
+        {
+            Console.WriteLine("\tTo-Do List");
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("Complete");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Incomplete");
+            Console.WriteLine("------------------");
 
+        }
 
 
         /// <summary>
@@ -234,18 +243,12 @@ namespace LongListLibrary
         public  void ViewListMenu()
         {
             MenuDisplaySettings();
-            
+            ViewList();
             Files files = new Files();
 
             List<Tuple<string, bool>> MyList = files.LoadItem();
 
-            Console.WriteLine("\tTo-Do List");
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine("Complete");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("------------------");
-
-
+            /// While Loop insert here
             int i = 1;
             int index = MyList.Count();
 
@@ -267,6 +270,7 @@ namespace LongListLibrary
             Console.WriteLine($"\nCurrent Page #{i}");
             Console.WriteLine("---------------------");
             // condition next && previous pages
+
             Console.Write("Enter Your Selection: ");
 
             var userInput = Console.ReadLine();
