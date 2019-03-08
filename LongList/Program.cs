@@ -14,7 +14,7 @@ namespace LongList
         static void Main(string[] args)
         {
 
-            
+
             //Files files = new Files();
 
             //List<Tuple<string, bool>> MyList = files.LoadItem();

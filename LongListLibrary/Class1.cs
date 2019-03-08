@@ -11,7 +11,7 @@ namespace LongListLibrary
     public class ClassLists
     {
 
-        
+
 
         /// <summary>
         /// Adds a new item to the list and then updates the Data File
@@ -19,21 +19,21 @@ namespace LongListLibrary
         /// </summary>
         public void AddThingsToMyList(string userInput, List<Tuple<string, bool>> MyList)
         {
-            
+
             Files files = new Files();
-            
-            
+
+
             MyList.Add(new Tuple<string, bool>(userInput, false));
 
             files.SaveItem(MyList);
 
         }
-        
-       
+
+
         /// <summary>
         /// Removes the items from the specified location on the list.
         /// </summary>
-        public void RemoveThingsFromMyList(List<Tuple<string,bool>> MyList, int indexNumber)
+        public void RemoveThingsFromMyList(List<Tuple<string, bool>> MyList, int indexNumber)
         {
             MyList.RemoveRange(0, indexNumber);
 
@@ -61,7 +61,7 @@ namespace LongListLibrary
 
             files.SaveItem(MyList);
 
-      
+
         }
 
 
@@ -78,7 +78,7 @@ namespace LongListLibrary
         /// <summary>
         /// Saves the changes made to the data file
         /// </summary>
-        public void SaveItem(List<Tuple<string,bool>> MyList)
+        public void SaveItem(List<Tuple<string, bool>> MyList)
         {
 
             FileStream stream = new FileStream(@"C:\Users\WWStudent\Desktop\Data2.dat", FileMode.OpenOrCreate);
@@ -105,12 +105,12 @@ namespace LongListLibrary
             MyList = bf.Deserialize(inStr) as List<Tuple<string, bool>>;
 
             inStr.Close();
-                       
+
             return MyList;
         }
 
 
-        
+
 
     }
 
@@ -118,7 +118,7 @@ namespace LongListLibrary
 
     public class ProgramLaunch
     {
-        public void Formalities ()
+        public void Formalities()
         {
             Files files = new Files();
             files.LoadItem();
@@ -129,7 +129,7 @@ namespace LongListLibrary
         /// completed they are deleted.
         /// </summary>
 
-        
+
 
     }
 
@@ -170,8 +170,8 @@ namespace LongListLibrary
         /// </summary>
         /// <returns></returns>       
         public bool MainMenuUserInput()
-        {   
-            
+        {
+
             var userInput = Console.ReadLine();
             // Add Tasks to the list
             if (userInput == "1")
@@ -197,7 +197,7 @@ namespace LongListLibrary
             }
 
         }
-                                               
+
         /// <summary>
         /// Adding Items to the user list by importing the list from file. Adding to the list and then saving the list.
         /// After enter the item the user is returned to the main menu
@@ -213,7 +213,7 @@ namespace LongListLibrary
             List<Tuple<string, bool>> MyList = files.LoadItem();
 
             Console.WriteLine("\tAdd Task Menu");
-            
+
             // Change text
             Console.Write("Add Something: ");
 
@@ -224,7 +224,9 @@ namespace LongListLibrary
         }
 
 
-
+        /// <summary>
+        /// Displays Texts for the View Menu
+        /// </summary>
         public void ViewList()
         {
             Console.WriteLine("\tTo-Do List");
@@ -240,74 +242,132 @@ namespace LongListLibrary
         /// <summary>
         /// View menu pulls from the load method > which opens the file location and assigns the list values to "MyList"
         /// </summary>
-        public  void ViewListMenu()
+        public void ViewListMenu()
         {
-            MenuDisplaySettings();
-            ViewList();
             Files files = new Files();
 
             List<Tuple<string, bool>> MyList = files.LoadItem();
 
-            /// While Loop insert here
+
             int i = 1;
-            int r = 0; // page numbers
-            int index;
-            if ((MyList.Count()-r*25) > 25)
+            int currentPage = 0;
+            int totalPages = (int)Math.Ceiling(MyList.Count() / 25.0);
+            /// To Do
+
+
+
+            do
             {
-                index = 25;
-            }
-            else
-            {
-                index = MyList.Count();       
-            }
-            MyList.Count();
+                
+                
+                    MenuDisplaySettings();
+                    ViewList();
 
-
-                foreach (Tuple<string, bool> item in MyList.GetRange(r,index))
-                {
-                    if (item.Item2 == true)
+                    int lowerLimit = currentPage * 25;
+                    int count = (currentPage == totalPages) ? (MyList.Count - currentPage * 25) : 25;
+                    /// Creates the list of the items currently on the list. Also evaluates if the task is complete.
+                    foreach (Tuple<string, bool> item in MyList.GetRange(lowerLimit, count))
                     {
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.WriteLine($"{i++}){item.Item1}");
+                        if (item.Item2 == true)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                            Console.WriteLine($"{i++}){item.Item1}");
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine($"{i++}) {item.Item1}");
+                        }
                     }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine($"{i++}) {item.Item1}");
-                    }
-                }
+                    i = 1;
 
-
-                /// Select item
-                Console.WriteLine($"\nCurrent Page #{r+1}");
+                /// bottom of the list view page.
+                Console.WriteLine($"\nCurrent Page #{currentPage + 1} of {totalPages}");
                 Console.WriteLine("---------------------");
                 // condition next && previous pages
-                if (MyList.Count()>25 && r == 0)
-                {
-                    Console.WriteLine($"'n') Next Page");
-                    Console.WriteLine($"");
-                }
-
-                Console.Write("Enter Your Selection: ");
-
-
-
-                ///     a.Mark as Complete
-                ///     b.Mark as Incomplete 
-                ///         
-                /// Next page (if more than 25)
-                /// Previous page
-
-
-
-
-                Console.ReadLine();
+            
+                Console.WriteLine($"'n') Next Page");
+                Console.WriteLine($"'p') Previous Page");
             
 
+                Console.Write("\nEnter Your Selection: ");
+                string userInput = Console.ReadLine().ToLower();
+
+                try
+                {
+                    if (userInput != "p" || userInput != "n" || userInput != "q")
+                    {
+                        MenuDisplaySettings();
+                        int intUserInput = Convert.ToInt32(userInput);
+                        Console.WriteLine($"Task:\t{MyList[( (currentPage*25)+ intUserInput) - 1].Item1}");
+                        Console.WriteLine("\n\n1) Complete");
+                        Console.WriteLine("\n2) Do It Later");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.WriteLine("   This Option will mark the item as\n" +
+                                            "   complete and create a Incomplete\n" +
+                                            "   at the end of the list. ");
+                        /// Add Method to Complete or Do Later
+                        Console.ReadLine();
+                    }
+                    /// Next
+                    else if (userInput == "n" )
+                    {
+                        if (currentPage == totalPages)
+                        {
+                            currentPage = 0;
+                        }
+                        else
+                        {
+                            currentPage++;
+                        }
+                    }
+                    else if (userInput == "p")
+                    {
+                        if (currentPage == 0)
+                        {
+                            currentPage = (totalPages - 1);
+                        }
+                        else
+                        {
+                            currentPage--;
+                        }
+
+                    }
 
 
 
 
+                }
+                catch (Exception)
+                {
+                    break;
+
+                }
+                /// Previous
+
+                
+            } while (true);
+            Console.ReadLine();
+
+
+
+
+            /// Takes the user selection from the list view menu
+
+
+
+
+
+            ///     a.Mark as Complete
+            ///     b.Mark as Incomplete 
+            ///         
+            /// Next page (if more than 25)
+            /// Previous page
+
+
+
+
+            Console.ReadLine();
 
 
         }
